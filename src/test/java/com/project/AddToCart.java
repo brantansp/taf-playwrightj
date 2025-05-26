@@ -6,6 +6,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -152,5 +153,72 @@ public class AddToCart {
 
         Assertions.assertThat(allProductName)
                 .isSortedAccordingTo(Comparator.reverseOrder());
+    }
+
+    @Test
+    @DisplayName("Waits in playwright are needed when reading texts of an element")
+    void waitsTest(Page page){
+        page.navigate("https://practicesoftwaretesting.com/");
+        page.waitForSelector(".card-img-top");
+
+        List <String> allTexts = page.locator(".card-img-top")
+                .all()
+                .stream()
+                .map(image -> image.getAttribute("alt"))
+                .toList();
+
+        Assertions.assertThat(allTexts).contains("Pliers");
+
+        page.getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName("Categories")).click();
+        //page.getByRole(AriaRole.MENUBAR).getByText("Categories").click();
+
+        page.getByRole(AriaRole.MENUBAR).getByText("Power Tools").click();
+
+        //page.waitForSelector(".card");
+        page.waitForSelector(".card", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(2000));
+
+        var filteredProducts = page.getByTestId("product-name").allInnerTexts();
+
+        Assertions.assertThat(filteredProducts).contains("Sheet Sander");
+    }
+
+    @Test
+    @DisplayName("Explicit waits are NOT needed when using Playwright actions")
+    void explicitWaitsTest(Page page) {
+        page.navigate("https://practicesoftwaretesting.com/");
+
+        page.getByLabel("Screwdriver").click();
+
+        Assertions.assertThat(page.getByLabel("Screwdriver").isChecked());
+
+        page.getByText("Phillips Screwdriver").click();
+
+        page.locator("#btn-add-to-cart").click();
+
+        assertThat(page.getByRole(AriaRole.ALERT)).isVisible();
+        assertThat(page.getByRole(AriaRole.ALERT)).hasText("Product added to shopping cart.");
+
+        page.waitForCondition(() -> page.getByRole(AriaRole.ALERT).isHidden());
+    }
+
+    @Test
+    @DisplayName("Waiting for network conditions")
+    void waitForNetworkConditionTest(Page page){
+        page.navigate("https://practicesoftwaretesting.com/");
+
+        page.waitForSelector("[data-test=product-price]");
+
+        page.waitForResponse("**/products?sort**", ()->{
+            page.getByLabel("Sort").selectOption("Price (High - Low)");
+        });
+
+        List <Double> prices = page.getByTestId("product-price")
+                .allInnerTexts()
+                .stream()
+                .map(price -> Double.parseDouble(price.replace("$","")))
+                .toList();
+
+        Assertions.assertThat(prices).isSortedAccordingTo(Comparator.reverseOrder());
+        System.out.println("Prices: " + prices);
     }
 }
