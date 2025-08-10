@@ -3,6 +3,7 @@ package com.project;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.Route;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
@@ -220,5 +221,24 @@ public class AddToCart {
 
         Assertions.assertThat(prices).isSortedAccordingTo(Comparator.reverseOrder());
         System.out.println("Prices: " + prices);
+    }
+
+    @Test
+    @DisplayName("Mocking the api response of the AUT")
+    void mockingAPIResponse(Page page){
+        page.route("**/products/search?q=Pliers", route -> {
+            route.fulfill(new Route.FulfillOptions()
+                    .setBody(MockResponse.MOCK_RESPONSE_SINGLE_PRODUCT)
+                    .setStatus(200)
+            );
+        });
+        page.navigate("https://practicesoftwaretesting.com/");
+        page.getByPlaceholder("Search").fill("Pliers");
+        page.getByTestId("search-submit").click();
+
+
+        assertThat(page.getByTestId("product-name")).hasCount(1);
+        assertThat(page.getByTestId("product-name")).hasText("Super Pliers");
+
     }
 }

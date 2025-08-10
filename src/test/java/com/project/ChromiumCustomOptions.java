@@ -1,5 +1,6 @@
 package com.project;
 
+import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.junit.Options;
 import com.microsoft.playwright.junit.OptionsFactory;
 
@@ -9,6 +10,7 @@ public class ChromiumCustomOptions implements OptionsFactory {
         return new Options().setBrowserName("chromium")
                 .setHeadless(false)
                 .setTestIdAttribute("data-test")
+                .setContextOptions(new Browser.NewContextOptions().setViewportSize(null))
                 .setLaunchOptions(
                         new com.microsoft.playwright.BrowserType.LaunchOptions()
                                 .setEnv(System.getenv())
@@ -16,6 +18,13 @@ public class ChromiumCustomOptions implements OptionsFactory {
                                 //.setProxy("http://proxy.example.com:8080")
                                 //.setSlowMo(50)
                                 .setArgs(java.util.Arrays.asList(
+                                        "--start-maximized",
+                                        "--disable-dev-shm-usage",
+                                        "--disable-web-security",
+                                        "--disable-site-isolation-trials",
+                                        "--disable-infobars",
+                                        "--disable-popup-blocking",
+                                        "--disable-notifications",
                                         "--no-sandbox",
                                         "--disable-gpu",
                                         "--disable-extensions"
