@@ -1,4 +1,4 @@
-package com.project;
+package com.project.examples;
 
 public record UserAddress(String street,
                           String city,

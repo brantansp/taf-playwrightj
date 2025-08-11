@@ -1,4 +1,4 @@
-package com.project;
+package com.project.examples;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -7,7 +7,6 @@ import com.microsoft.playwright.*;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.RequestOptions;
-import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,7 +1,5 @@
-package com.project;
+package com.project.examples;
 
-import com.microsoft.playwright.APIRequestContext;
-import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.RequestOptions;
 

@@ -1,13 +1,10 @@
-package com.project;
+package com.project.toolshop.tests;
 
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Route;
-import com.microsoft.playwright.junit.UsePlaywright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import com.project.examples.MockResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,11 +17,10 @@ import java.util.Comparator;
 import java.util.List;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-@UsePlaywright(ChromiumCustomOptions.class)
-public class AddToCart {
+public class AddToCartTest extends BaseTest{
 
     @Test
-    void testAddToCart(Page page, Playwright playwright) {
+    void testAddToCart() {
         page.navigate("https://practicesoftwaretesting.com/");
         page.getByPlaceholder("Search").fill("Pliers");
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Search")).click();
@@ -42,7 +38,7 @@ public class AddToCart {
     }
 
     @Test
-    void uploadFilesTest(Page page) throws URISyntaxException {
+    void uploadFilesTest() throws URISyntaxException {
         page.navigate("https://practicesoftwaretesting.com/contact");
 
         var fileUpload = page.getByLabel("Attachment");
@@ -57,8 +53,9 @@ public class AddToCart {
     @DisplayName("Filling the contact us form")
     @ParameterizedTest
     @ValueSource(strings = {"First name","Last name","Email","Message"})
-    void testContactUsForm(String values, Page page) throws InterruptedException {
+    void testContactUsForm(String values) throws InterruptedException {
         page.navigate("https://practicesoftwaretesting.com/contact");
+        page.waitForLoadState(LoadState.NETWORKIDLE);
 
         var firstName = page.getByLabel("First name");
         var lastName = page.getByLabel("Last name");
@@ -87,7 +84,7 @@ public class AddToCart {
 
     @DisplayName("AssertJ assertions")
     @Test
-    void assertJAssertionsTest(Page page){
+    void assertJAssertionsTest(){
         page.navigate("https://practicesoftwaretesting.com/");
         page.waitForCondition(()-> page.getByTestId("product-price").count() > 0);
 
@@ -110,7 +107,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Sorting products by name in ascending order test")
-    void sortingByNameTest(Page page) throws InterruptedException {
+    void sortingByNameTest() throws InterruptedException {
         page.navigate("https://practicesoftwaretesting.com/");
         page.waitForCondition(()-> page.getByTestId("product-price").count() > 0);
 
@@ -141,7 +138,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Sorting products by name in descending test")
-    void sortingByNameDescendingTest(Page page) throws InterruptedException {
+    void sortingByNameDescendingTest() throws InterruptedException {
         page.navigate("https://practicesoftwaretesting.com/");
         page.waitForCondition(() -> page.getByTestId("product-price").count() > 0);
 
@@ -158,7 +155,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Waits in playwright are needed when reading texts of an element")
-    void waitsTest(Page page){
+    void waitsTest(){
         page.navigate("https://practicesoftwaretesting.com/");
         page.waitForSelector(".card-img-top");
 
@@ -185,7 +182,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Explicit waits are NOT needed when using Playwright actions")
-    void explicitWaitsTest(Page page) {
+    void explicitWaitsTest() {
         page.navigate("https://practicesoftwaretesting.com/");
 
         page.getByLabel("Screwdriver").click();
@@ -204,7 +201,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Waiting for network conditions")
-    void waitForNetworkConditionTest(Page page){
+    void waitForNetworkConditionTest(){
         page.navigate("https://practicesoftwaretesting.com/");
 
         page.waitForSelector("[data-test=product-price]");
@@ -225,7 +222,7 @@ public class AddToCart {
 
     @Test
     @DisplayName("Mocking the api response of the AUT")
-    void mockingAPIResponse(Page page){
+    void mockingAPIResponse(){
         page.route("**/products/search?q=Pliers", route -> {
             route.fulfill(new Route.FulfillOptions()
                     .setBody(MockResponse.MOCK_RESPONSE_SINGLE_PRODUCT)
@@ -239,6 +236,5 @@ public class AddToCart {
 
         assertThat(page.getByTestId("product-name")).hasCount(1);
         assertThat(page.getByTestId("product-name")).hasText("Super Pliers");
-
     }
 }

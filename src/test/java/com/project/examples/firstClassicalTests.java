@@ -1,4 +1,4 @@
-package com.project;
+package com.project.examples;
 
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;

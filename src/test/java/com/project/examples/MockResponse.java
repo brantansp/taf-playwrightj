@@ -1,4 +1,4 @@
-package com.project;
+package com.project.examples;
 
 public class MockResponse {
     public static final String MOCK_RESPONSE_SINGLE_PRODUCT = """

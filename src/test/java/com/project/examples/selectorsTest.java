@@ -1,4 +1,4 @@
-package com.project;
+package com.project.examples;
 
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Locator;
