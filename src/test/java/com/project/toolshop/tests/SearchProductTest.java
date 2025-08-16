@@ -1,20 +1,26 @@
 package com.project.toolshop.tests;
 
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.LoadState;
 import com.project.examples.ChromiumCustomOptions;
 import com.project.toolshop.pageobjects.*;
+import com.project.toolshop.utilities.Takesscreenshot;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 
 @UsePlaywright(ChromiumCustomOptions.class)
-public class SearchProductTest {
+@Feature("Searching the products")
+public class SearchProductTest implements Takesscreenshot {
     SearchComponents searchComponents;
     ProductList productList;
     ProductPage productPage;
@@ -22,20 +28,40 @@ public class SearchProductTest {
     CheckoutPage checkoutPage;
 
     @BeforeEach
-    void setup(Page page) {
+    void setup(Page page, BrowserContext context) {
         page.navigate("https://practicesoftwaretesting.com/");
+        page.waitForLoadState(LoadState.NETWORKIDLE);
 
         searchComponents = new SearchComponents(page);
         productList = new ProductList(page);
         productPage = new ProductPage(page);
         navBar = new NavBar(page);
         checkoutPage = new CheckoutPage(page);
+
+        context.tracing().start(
+                new Tracing.StartOptions()
+                        .setScreenshots(true)
+                        .setSources(true)
+                        .setSnapshots(true)
+        );
+    }
+
+    @AfterEach
+    void recordTrace(TestInfo test, BrowserContext context) {
+        String testName = test.getDisplayName().replace(" ","-");
+        context.tracing().stop(
+                new Tracing.StopOptions()
+                        .setPath(Paths.get("target/traces/traces-"+testName+".zip")));
+
+        //npx playwright show-trace traces.zip
+        // This command can be used to view the trace in a browser or visit https://trace.playwright.dev/
     }
 
     @Test
     @DisplayName("Search for the products by keywords")
+    @Story("Search for the products by keywords")
     void searchProductsByKeyWordsWOPOM(Page page) {
-        page.navigate("https://practicesoftwaretesting.com/");
+
         page.waitForResponse("**/products/search?q=tape", () -> {
             page.getByPlaceholder("Search").fill("tape");
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Search")).click();
@@ -46,6 +72,7 @@ public class SearchProductTest {
 
     @Test
     @DisplayName("Search for the products by keywords using Page Object Model")
+    @Story("Search for the products by keywords using Page Object Model")
     void searchProductsByKeyWordsPOM() {
         searchComponents.searchBy("tape");
         var matchingProducts = productList.getMatchingProductNames();
@@ -54,6 +81,7 @@ public class SearchProductTest {
 
     @Test
     @DisplayName("Adding pliers to cart and checkout with the order")
+    @Story("Adding pliers to cart and checkout with the order")
     void addPliersToCartAndCheckout() {
         searchComponents.searchBy("pliers");
         productList.selectTheProduct("Combination Pliers");
@@ -75,6 +103,7 @@ public class SearchProductTest {
 
     @Test
     @DisplayName("Adding two products to cart and checkout with the order")
+    @Story("Adding two products to cart and checkout with the order")
     void addTwoProductsToCartAndCheckout(){
         navBar.navigateToHomePage();
         searchComponents.searchBy("pliers");

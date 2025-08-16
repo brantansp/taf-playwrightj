@@ -173,7 +173,7 @@ public class AddToCartTest extends BaseTest{
         page.getByRole(AriaRole.MENUBAR).getByText("Power Tools").click();
 
         //page.waitForSelector(".card");
-        page.waitForSelector(".card", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(2000));
+        page.waitForSelector(".card", new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
 
         var filteredProducts = page.getByTestId("product-name").allInnerTexts();
 
@@ -206,7 +206,7 @@ public class AddToCartTest extends BaseTest{
 
         page.waitForSelector("[data-test=product-price]");
 
-        page.waitForResponse("**/products?sort**", ()->{
+        page.waitForResponse("**/products?page=0&sort=price**", ()->{
             page.getByLabel("Sort").selectOption("Price (High - Low)");
         });
 

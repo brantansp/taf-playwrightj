@@ -1,6 +1,8 @@
 package com.project.toolshop.pageobjects;
 
 import com.microsoft.playwright.Page;
+import com.project.toolshop.utilities.ScreenshotManager;
+import io.qameta.allure.Step;
 
 import java.util.List;
 
@@ -11,8 +13,10 @@ public class CheckoutPage {
         this.page = page;
     }
 
+    @Step("Navigate to checkout page and getting the cart line items")
     public List<CartLineItem> getCartLineItems() {
         page.locator("app-cart tbody tr").first().waitFor();
+        ScreenshotManager.takeScreenshot(page, "checkout-page-cart-line-items");
         return page.locator("app-cart tbody tr")
                 .all()
                 .stream()
