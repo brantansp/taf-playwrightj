@@ -7,6 +7,8 @@ import com.microsoft.playwright.*;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.RequestOptions;
+import com.project.domain.User;
+import com.project.domain.UserAddress;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

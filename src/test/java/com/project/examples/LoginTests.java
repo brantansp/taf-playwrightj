@@ -2,6 +2,7 @@ package com.project.examples;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.junit.UsePlaywright;
+import com.project.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

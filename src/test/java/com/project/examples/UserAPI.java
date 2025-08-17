@@ -2,6 +2,7 @@ package com.project.examples;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.RequestOptions;
+import com.project.domain.User;
 
 public class UserAPI {
     private final String BASE_URL = "https://api.practicesoftwaretesting.com/users/register";

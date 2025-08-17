@@ -1,13 +1,9 @@
 package com.project.toolshop.tests;
 
 import com.microsoft.playwright.*;
-import io.qameta.allure.Allure;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import java.io.ByteArrayInputStream;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import static com.project.toolshop.utilities.ScreenshotManager.takeScreenshot;

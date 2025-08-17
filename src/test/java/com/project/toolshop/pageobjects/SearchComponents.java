@@ -14,10 +14,16 @@ public class SearchComponents {
 
     @Step("Search for products with keyword {keyword}")
     public void searchBy(String keyword) {
-        page.waitForResponse("**/products/search?q=" + keyword, () -> {
+        page.waitForResponse("**/products/search?q=**", () -> {
             page.getByPlaceholder("Search").fill(keyword);
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Search")).click();
         });
         ScreenshotManager.takeScreenshot(page, "search-results-" + keyword);
+    }
+
+    public void clickOnFilter(String filterName) {
+        page.waitForResponse("**/products?**by_category=**", () -> {
+            page.getByLabel(filterName).click();
+        });
     }
 }

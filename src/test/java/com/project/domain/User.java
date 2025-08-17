@@ -1,4 +1,4 @@
-package com.project.examples;
+package com.project.domain;
 
 import net.datafaker.Faker;
 

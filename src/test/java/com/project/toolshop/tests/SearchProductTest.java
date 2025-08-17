@@ -6,6 +6,7 @@ import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
+import com.project.domain.CartLineItem;
 import com.project.examples.ChromiumCustomOptions;
 import com.project.toolshop.pageobjects.*;
 import com.project.toolshop.utilities.Takesscreenshot;

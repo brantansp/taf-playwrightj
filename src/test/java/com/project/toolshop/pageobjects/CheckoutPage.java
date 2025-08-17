@@ -1,6 +1,7 @@
 package com.project.toolshop.pageobjects;
 
 import com.microsoft.playwright.Page;
+import com.project.domain.CartLineItem;
 import com.project.toolshop.utilities.ScreenshotManager;
 import io.qameta.allure.Step;
 
