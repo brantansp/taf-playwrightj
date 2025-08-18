@@ -1,6 +1,7 @@
 package com.project.toolshop.pageobjects;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.LoadState;
 import com.project.toolshop.utilities.ScreenshotManager;
 import io.qameta.allure.Step;
 
@@ -19,5 +20,6 @@ public class NavBar {
     @Step("Navigating to the home page")
     public void navigateToHomePage() {
         page.getByTestId("nav-home").click();
+        page.waitForLoadState(LoadState.NETWORKIDLE);
     }
 }

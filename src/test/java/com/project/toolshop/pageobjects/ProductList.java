@@ -34,7 +34,9 @@ public class ProductList {
 
     @Step("Selecting the product with name {productName}")
     public void selectTheProduct(String productName) {
-        page.locator(".card", new Page.LocatorOptions().setHasText(productName)).click();
+        page.waitForResponse("**/products/**",() -> {
+            page.locator(".card", new Page.LocatorOptions().setHasText(productName)).click();
+        });
         ScreenshotManager.takeScreenshot(page, "product-selected-" + productName);
         page.waitForLoadState(LoadState.NETWORKIDLE);
     }
