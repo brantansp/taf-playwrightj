@@ -17,7 +17,7 @@ public class secondModernTestsWithBrowserOptions {
         @Override
         public Options getOptions() {
             return new Options().setBrowserName("chromium")
-                    .setHeadless(false)
+                    .setHeadless(true)
                     .setLaunchOptions(
                             new BrowserType.LaunchOptions()
                                     .setEnv(System.getenv())
