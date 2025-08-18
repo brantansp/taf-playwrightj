@@ -8,9 +8,9 @@ public class ChromiumCustomOptions implements OptionsFactory {
     @Override
     public Options getOptions() {
         return new Options().setBrowserName("chromium")
-                .setHeadless(false)
+                .setHeadless(true)
                 .setTestIdAttribute("data-test")
-                .setContextOptions(new Browser.NewContextOptions().setViewportSize(null))
+                //.setContextOptions(new Browser.NewContextOptions().setViewportSize(null))
                 .setLaunchOptions(
                         new com.microsoft.playwright.BrowserType.LaunchOptions()
                                 .setEnv(System.getenv())
@@ -19,12 +19,6 @@ public class ChromiumCustomOptions implements OptionsFactory {
                                 //.setSlowMo(50)
                                 .setArgs(java.util.Arrays.asList(
                                         "--start-maximized",
-                                        "--disable-dev-shm-usage",
-                                        "--disable-web-security",
-                                        "--disable-site-isolation-trials",
-                                        "--disable-infobars",
-                                        "--disable-popup-blocking",
-                                        "--disable-notifications",
                                         "--no-sandbox",
                                         "--disable-gpu",
                                         "--disable-extensions"
