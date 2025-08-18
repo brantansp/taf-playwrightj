@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: dream
+    runs-on: self-hosted
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
